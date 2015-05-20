@@ -1,0 +1,520 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fnil\fcharset0 Microsoft Sans Serif;}}
+{\colortbl ;\red0\green0\blue128;\red0\green0\blue0;\red0\green100\blue0;\red0\green0\blue255;\red25\green25\blue112;\red0\green139\blue139;\red0\green128\blue0;\red255\green0\blue0;\red139\green69\blue19;\red0\green0\blue139;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\b\f0\fs32 Converting CWE XML into a TeamMentor Library\b0\fs22\par
+\par
+\b Download Zip file\b0\par
+\cf1\lang1031\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\line\cf4 "{\field{\*\fldinst{HYPERLINK "http://cwe.mitre.org/data/xml/views/2000.xml.zip".download(targetDir"}}{\fldrslt{\ul\cf4 http://cwe.mitre.org/data/xml/views/2000.xml.zip"\cf3 .\cf5\b download\cf3\b0 (\cf2 targetDir}}}\cf3\f1\fs18 );\par
+\par
+\cf0\lang9\b\f0\fs22 Download and unzip: \b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf4\b if \cf3\b0 (\cf2 cweXml\cf3 .\cf5\b fileExists\cf3\b0 ().\cf5\b isFalse\cf3\b0 ())\par
+\{\par
+\cf1\tab var \cf2 cweZip \cf3 = \cf2 cweXml\cf3 += \cf4 ".zip"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 cweZip\cf3 .\cf5\b fileExists\cf3\b0 ().\cf5\b isFalse\cf3\b0 ())\par
+\tab\tab\cf4 "{\field{\*\fldinst{HYPERLINK "http://cwe.mitre.org/data/xml/views/2000.xml.zip".download(targetDir"}}{\fldrslt{\ul\cf4 http://cwe.mitre.org/data/xml/views/2000.xml.zip"\cf3 .\cf5\b download\cf3\b0 (\cf2 targetDir}}}\cf3\f1\fs18 );\par
+\tab\cf2 cweZip\cf3 .\cf5\b unzip_File\cf3\b0 (\cf2 targetDir\cf3 );\par
+\}\par
+\cf1 return \cf2 cweXml\cf3 ;\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+\b Loading XML as C# object \par
+\pard\b0 note: \cf7\lang1031\f1\fs18 cwe_schema_v5.1.cs \cf0\lang9\f0\fs22 is the C# representation of the \cf7\lang1031\f1\fs18 cwe_schema_v5.1.xsd \cf0\lang9\f0\fs22 provided by CWE\cf7\lang1031\f1\fs18\par
+\cf0\lang9\f0\fs22\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 return \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\cf7 //O2File:cwe_schema_v5.1.cs\par
+\pard\sa200\sl276\slmult1 //O2Ref:O2_Misc_Microsoft_MPL_Libs.dll\cf0\lang9\f0\fs22\par
+\b Getting list of WeakNess:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness \cf3 ;\cf0\lang9\f0\fs22\par
+\b View Weaknesses in TreeView with PropertyGrid\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\cf1 var \cf2 weaknesses \cf3 = \cf2 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness \cf3 ;\par
+\cf2 panel\cf3 .\cf5\b clear\cf3\b0 ()\par
+\tab  .\cf5\b add_TreeView_with_PropertyGrid\cf3\b0 (\cf6\b false\cf3\b0 )\par
+\pard\sa200\sl276\slmult1\tab  .\cf5\b add_Nodes\cf3\b0 (\cf2 weaknesses\cf3 );\cf0\lang9\f0\fs22\par
+\b\par
+Next step is to normalize  this XML data into TM friendly schema, for example:\par
+\pard\cf2\lang1031\b0\f1\fs18     \cf3 [\cf2 Serializable\cf3 ]\par
+    \cf4\b public \cf8\b0 class \cf2 CWE_Data\par
+    \cf3\{\par
+    \tab\cf4\b public \cf2\b0 List\cf3 <\cf2 CWE_Weakness\cf3 > \cf2 Weaknesses \cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ; \}\par
+    \tab\par
+    \tab\cf4\b public \cf5 CWE_Data\cf3\b0 ()\par
+    \tab\{\par
+    \tab\tab\cf2 Weaknesses \cf3 = \cf6\b new \cf2\b0 List\cf3 <\cf2 CWE_Weakness\cf3 >();\par
+    \tab\}\par
+    \}\par
+    \par
+    \cf4\b public \cf8\b0 class \cf2 CWE_Weakness\par
+    \cf3\{\par
+    \tab [\cf2 XmlAttribute\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Title \tab\tab\cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}    \tab\par
+    \tab [\cf2 XmlAttribute\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Technology \cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}\par
+    \tab [\cf2 XmlAttribute\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Phase \tab\tab\cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}\par
+    \tab [\cf2 XmlAttribute\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Type \tab\tab\cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}\par
+    \tab [\cf2 XmlAttribute\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Category \tab\cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}\par
+    \tab [\cf2 XmlElement\cf3 ] \tab\cf4\b public \cf8\b0 string \cf2 Content \tab\cf3\{ \cf9 get\cf3 ; \cf9 set\cf3 ;\}\par
+\pard\sa200\sl276\slmult1     \}\par
+\cf0\lang9\b\f0\fs22\par
+Creating a CWE_Weakness object with Title from CWE's Weakness\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 .\cf5\b Take\cf3\b0 (\cf10 5\cf3 ))\par
+\{\tab\par
+\tab\cf1 var \cf2 cweWeakness \cf3 = \cf6\b new \cf5 CWE_Weakness\cf3\b0 ();\par
+\tab\cf2 cweWeakness\cf3 .\cf2 Title \cf3 = \cf2 weakness\cf3 .\cf2 Name\cf3 ;\par
+\tab\cf1 return \cf2 cweWeakness\cf3 ;\par
+\}\par
+\par
+\cf7 //O2File:cwe_schema_v5.1.cs\par
+//O2File:CWE_Data.cs\par
+\pard\sa200\sl276\slmult1 //O2Ref:O2_Misc_Microsoft_MPL_Libs.dll\par
+\cf0\lang9\b\f0\fs22\par
+Listing all unique combinations of Applied Platformds (to get the technology)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\par
+\cf1 var \cf2 platforms \cf3 = \cf6\b new \cf2\b0 List\cf3 <\cf8 string\cf3 >();\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\tab\par
+\tab\cf2 platforms\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b str\cf3\b0 ());\par
+\}\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 platforms\cf3 ;\cf0\lang9\b\f0\fs22\par
+Deal with the cases where there is no Applicable_Platform defined\par
+\pard\cf4\lang1031\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\{\par
+\tab\tab\cf2 platforms\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b str\cf3\b0 ());\par
+\tab\}\par
+\tab\cf4\b else\par
+\tab\tab\cf2\b0 platforms\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf4 "None defined"\cf3 );\par
+\pard\sa200\sl276\slmult1\}\cf0\lang9\b\f0\fs22\par
+Normalizing the Technology_Class\par
+\pard\cf4\lang1031\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\{\par
+\tab\tab\cf4\b if\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf2 platforms\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b str\cf3\b0 ());\par
+\tab\tab\tab\cf1 continue\cf3 ;\par
+\tab\tab\}\par
+\tab\tab\cf4\b else if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf1 var \cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf2 Technology_Class\cf3 .\cf5\b Select\cf3\b0 ((\cf2 technologyClass\cf3 )=>\cf2 technologyClass\cf3 .\cf2 Technology_Name\cf3 )\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab   \tab\tab\tab\tab   .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab   \tab\tab\tab\tab   .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\tab\tab\cf1 return \cf2 technology\cf3 ; \par
+\tab\tab\}\tab\tab\tab\par
+\pard\sa200\sl276\slmult1\tab\}\par
+\}\cf0\lang9\b\f0\fs22\par
+Normalizing the Language class:\par
+\pard\cf4\lang1031\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\{\par
+\tab\tab\cf4\b if\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf1 var \cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf2 Language\cf3 .\cf5\b Select\cf3\b0 ((\cf2 language\cf3 )=>\cf2 language\cf3 .\cf2 Language_Name\cf3 )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\tab\tab\cf1 return \cf2 technology\cf3 ;\par
+\tab\tab\}\par
+\pard\sa200\sl276\slmult1\tab\cf0\lang9\b\f0\fs22\par
+.\par
+trick to quickly view contents of specific technology (one set of mappings)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 platforms \cf3 = \cf6\b new \cf2\b0 Dictionary\cf3 <\cf8 string\cf3 , \cf2 List\cf3 <\cf8 string\cf3 >>();\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\cf2\par
+   ... \par
+   platforms\cf3 .\cf9 add\cf3 (\cf2 technology\cf3 ,\cf2 weakness\cf3 .\cf5\b str\cf3\b0 ());\tab\par
+ \}\cf1\par
+var \cf2 textArea \cf3 = \cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_TextArea\cf3\b0 ();\par
+\cf2 textArea\cf3 .\cf5\b insert_Left\cf3\b0 ().\cf5\b add_TreeView\cf3\b0 ().\cf5\b add_Nodes\cf3\b0 (\cf2 platforms\cf3 [\cf4 "Not Defined"\cf3 ]).\cf2 afterSelect\cf3 <\cf8 string\cf3 >((\cf2 text\cf3 )=> \cf2 textArea\cf3 .\cf5\b set_Text\cf3\b0 (\cf2 text\cf3 ));\par
+\pard\sa200\sl276\slmult1\cf0\lang9\b\f0\fs22\par
+trick to quickly view contents of specific technology (all mappings) \par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 textArea \cf3 = \cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_SourceCodeViewer\cf3\b0 ();\par
+\cf1 var \cf2 treeView \cf3 = \cf2 textArea\cf3 .\cf5\b insert_Left\cf3\b0 ().\cf5\b add_TreeView\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab  .\cf2 afterSelect\cf3 <\cf8 string\cf3 >((\cf2 text\cf3 )=> \cf2 textArea\cf3 .\cf5\b set_Text\cf3\b0 (\cf2 text\cf3 ,\cf4 ".xml"\cf3 ))\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab  .\cf5\b sort\cf3\b0 ();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 item \cf4\b in \cf2\b0 platforms\cf3 )\par
+\tab\cf2 treeView\cf3 .\cf5\b add_Node\cf3\b0 (\cf4 "\{0\}   ..........  (\{1\} items)"\cf3 .\cf5\b format\cf3\b0 (\cf2 item\cf3 .\cf2 Key\cf3 , \cf2 item\cf3 .\cf2 Value\cf3 .\cf5\b size\cf3\b0 ()))\par
+\pard\sa200\sl276\slmult1\tab\tab\tab .\cf5\b add_Nodes\cf3\b0 (\cf2 item\cf3 .\cf2 Value\cf3 );\cf0\lang9\b\f0\fs22\par
+Mapping of Technology value (finished)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\par
+\cf1 var \cf2 cweData \cf3 = \cf6\b new \cf5 CWE_Data\cf3\b0 ();\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 .\cf5\b Take\cf3\b0 (\cf10 40\cf3 ))\par
+\{\tab\par
+\tab\cf7 //mapping technology\par
+\tab\cf1 var \cf2 technology \cf3 = \cf4 "Not Defined"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\{\tab\tab\par
+\tab\tab\cf4\b if\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf2 Language \par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf5\b Select\cf3\b0 ((\cf2 language\cf3 )=>\cf2 language\cf3 .\cf2 Language_Name \cf3 )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\tab\tab\cf4\b if \cf3\b0 (\cf2 technology\cf3 ==\cf4 ""\cf3 )\par
+\tab\tab\tab\tab\cf2 technology \cf3 =  \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf2 Language_Class \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab  \cf3 .\cf5\b Select\cf3\b0 ((\cf2 language\cf3 )=>\cf2 language\cf3 .\cf2 Language_Class_Description \cf3 )\par
+\tab\tab\tab\tab\tab\tab   \tab\tab\tab   .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab   \tab\tab\tab   .\cf1 join\cf3 (\cf4 ","\cf3 );\tab\tab\tab\tab   \tab\tab\tab\par
+\tab\tab\}\par
+\tab\tab\cf4\b else if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes \par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf2 Technology_Class\cf3 .\cf5\b Select\cf3\b0 ((\cf2 technologyClass\cf3 )=>\cf2 technologyClass\cf3 .\cf2 Technology_Name\cf3 )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\tab\tab\tab\par
+\tab\tab\}\tab\tab\tab\tab\tab\par
+\tab\}\par
+\tab\cf1 var \cf2 cweWeakNess \cf3 = \cf6\b new \cf5 CWE_Weakness\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Title\tab\tab\cf3 = \cf2 weakness\cf3 .\cf2 Name\cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Technology  \cf3 = \cf2 technology\par
+\tab\tab\tab\tab\tab\tab\tab\cf3\};\par
+\tab\cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf9 add\cf3 (\cf2 cweWeakNess\cf3 );\tab\tab\tab\tab\tab\par
+ \}\par
+\cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_TreeView_with_PropertyGrid\cf3\b0 (\cf6\b false\cf3\b0 )\par
+\tab\tab\tab  .\cf5\b add_Nodes\cf3\b0 (\cf2 cweData\cf3 .\cf2 Weaknesses\cf3 )\par
+\tab\tab\tab  .\cf5\b selectFirst\cf3\b0 ();\par
+\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 cweData\cf3 ;\cf0\lang9\b\f0\fs22\par
+Mapping content (html): \par
+\cf1\lang1031\b0\f1\fs18 var \cf2 content \cf3 = \cf4 "<p>\{0\}</p> \\n\\n <p>\{1\}</p>"\cf3 .\cf5\b format\cf3\b0 (\cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Description_Summary\cf3 , \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf2 Text\cf3 .\cf5\b toList\cf3\b0 ().\cf1 join\cf3 (\cf4 "\\n"\cf3 ));\par
+\cf0\lang9\b\f0\fs22 Mapping content (with null detection): \cf3\lang1031\b0\f1\fs18\par
+\pard\cf0\fs24\tab\cf1\fs18 var \cf2 content \cf3 = \cf4 "<p>\{0\}</p> \\n\\n <p>\{1\}</p>"\cf3 .\cf5\b format\cf3\b0 (\cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Description_Summary\cf3 .\cf5\b notNull\cf3\b0 () \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab ? \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Description_Summary\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab : \cf4 ""\cf3 , \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf5\b notNull\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab ? \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf2 Text\cf3 .\cf5\b toList\cf3\b0 ().\cf1 join\cf3 (\cf4 "\\n"\cf3 )\par
+\pard\sa200\sl276\slmult1\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf2 : \cf4 ""\cf3 );\cf0\lang9\b\f0\fs22\par
+mapping phase (get a fell for the content)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 phases \cf3 = \cf6\b new \cf2\b0 List\cf3 <\cf8 string\cf3 >();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 .\cf5\b Take\cf3\b0 (\cf10 40\cf3 ))\par
+\{\tab\par
+\tab\cf2 phases\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 weakness\cf3 .\cf2 Time_of_Introduction\cf3 .\cf5\b str\cf3\b0 ());\par
+\cf1\tab ...\par
+\}\par
+return \cf2 phases\cf3 ;\par
+\pard\sa200\sl276\slmult1\tab\cf0\lang9\b\f0\fs22\par
+mapping phase (and view unique combinations of parsed phase)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 phases \cf3 = \cf6\b new \cf2\b0 List\cf3 <\cf8 string\cf3 >();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 .\cf5\b Take\cf3\b0 (\cf10 40\cf3 ))\par
+\{\tab\par
+\tab\cf1 var \cf2 phase \cf3 = \cf4 "Not Defined"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Time_of_Introduction\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\cf2 phase \cf3 = \cf2 weakness\cf3 .\cf2 Time_of_Introduction\cf3 .\cf2 Introductory_Phase\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf5\b Select\cf3\b0 ((\cf2 introPhase\cf3 )=>\cf2 introPhase\cf3 .\cf5\b str\cf3\b0 () )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\par
+\pard\sa200\sl276\slmult1\tab\cf2 phases\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 phase\cf3 );\par
+\pard\cf1\tab ...\par
+\}\par
+return \cf2 phases\cf3 ;\par
+\pard\sa200\sl276\slmult1\cf0\lang9\b\f0\fs22\par
+mapping rest of data (putting it all together)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 cweWeakNess \cf3 = \cf6\b new \cf5 CWE_Weakness\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Title\tab\tab\cf3 = \cf4 "\{0\} - \{1\}"\cf3 .\cf5\b format\cf3\b0 (\cf2 weakness\cf3 .\cf2 ID\cf3 ,\cf2 weakness\cf3 .\cf2 Name\cf3 ),\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Technology  \cf3 = \cf2 technology\cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Type \tab\tab\cf3 = \cf2 weakness\cf3 .\cf2 Status\cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Phase \tab\tab\cf3 = \cf2 phase \cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Category \tab\cf3 = \cf4 "CWE" \cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Content \tab\cf3 = \cf2 content\tab\tab\tab\tab\tab\tab\tab\tab\par
+\pard\sa200\sl276\slmult1\tab\tab\tab\tab\tab\tab\tab\cf3\};\cf0\lang9\b\f0\fs22\par
+\par
+Final Script: with file saved to : \cf2\lang1033\b0\f2\fs17 _O2_V4_TempDir\\4-18-2012\\_CWE_Data\\Cwe_data.xml\cf0\lang9\b\f0\fs22\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf4\b if \cf3\b0 (\cf2 cweXml\cf3 .\cf5\b fileExists\cf3\b0 ().\cf5\b isFalse\cf3\b0 ())\par
+\{\par
+\tab\cf1 var \cf2 cweZip \cf3 = \cf2 cweXml\cf3 += \cf4 ".zip"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 cweZip\cf3 .\cf5\b fileExists\cf3\b0 ().\cf5\b isFalse\cf3\b0 ())\par
+\tab\tab\cf4 "{\field{\*\fldinst{HYPERLINK "http://cwe.mitre.org/data/xml/views/2000.xml.zip".download(targetDir"}}{\fldrslt{\ul\cf4 http://cwe.mitre.org/data/xml/views/2000.xml.zip"\cf3 .\cf5\b download\cf3\b0 (\cf2 targetDir}}}\cf3\f1\fs18 );\par
+\tab\cf2 cweZip\cf3 .\cf5\b unzip_File\cf3\b0 (\cf2 targetDir\cf3 );\par
+\}\par
+\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+\par
+\cf1 var \cf2 cweData \cf3 = \cf6\b new \cf5 CWE_Data\cf3\b0 ();\par
+\par
+\cf1 var \cf2 phases \cf3 = \cf6\b new \cf2\b0 List\cf3 <\cf8 string\cf3 >();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 catalog\cf3 .\cf2 Weaknesses\cf3 .\cf2 Weakness\cf3 )\par
+\{\tab\par
+\tab\cf7 //mapping phase \par
+\tab\cf1 var \cf2 phase \cf3 = \cf4 "Not Defined"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Time_of_Introduction\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\cf2 phase \cf3 = \cf2 weakness\cf3 .\cf2 Time_of_Introduction\cf3 .\cf2 Introductory_Phase\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf5\b Select\cf3\b0 ((\cf2 introPhase\cf3 )=>\cf2 introPhase\cf3 .\cf5\b str\cf3\b0 () )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\par
+\tab\cf2 phases\cf3 .\cf5\b add_If_Not_There\cf3\b0 (\cf2 phase\cf3 );\par
+\tab\par
+\tab\cf7 //mapping technology\par
+\tab\cf1 var \cf2 technology \cf3 = \cf4 "Not Defined"\cf3 ;\par
+\tab\cf4\b if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\{\tab\tab\par
+\tab\tab\cf4\b if\cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf2 Language \par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf5\b Select\cf3\b0 ((\cf2 language\cf3 )=>\cf2 language\cf3 .\cf2 Language_Name \cf3 )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\par
+\tab\tab\tab\cf4\b if \cf3\b0 (\cf2 technology\cf3 ==\cf4 ""\cf3 )\par
+\tab\tab\tab\tab\cf2 technology \cf3 =  \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Languages\cf3 .\cf2 Language_Class \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab  \cf3 .\cf5\b Select\cf3\b0 ((\cf2 language\cf3 )=>\cf2 language\cf3 .\cf2 Language_Class_Description \cf3 )\par
+\tab\tab\tab\tab\tab\tab   \tab\tab\tab   .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab   \tab\tab\tab   .\cf1 join\cf3 (\cf4 ","\cf3 );\tab\tab\tab\tab   \tab\tab\tab\par
+\tab\tab\}\par
+\tab\tab\cf4\b else if \cf3\b0 (\cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes\cf3 .\cf5\b notNull\cf3\b0 ())\par
+\tab\tab\{\par
+\tab\tab\tab\cf2 technology \cf3 = \cf2 weakness\cf3 .\cf2 Applicable_Platforms\cf3 .\cf2 Technology_Classes \par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf3 .\cf2 Technology_Class\cf3 .\cf5\b Select\cf3\b0 ((\cf2 technologyClass\cf3 )=>\cf2 technologyClass\cf3 .\cf2 Technology_Name\cf3 )\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf5\b toList\cf3\b0 ()\par
+\tab\tab\tab\tab\tab   \tab\tab\tab  .\cf1 join\cf3 (\cf4 ","\cf3 );\tab\tab\tab\par
+\tab\tab\}\tab\tab\tab\tab\tab\par
+\tab\}\par
+\tab\cf1 var \cf2 content \cf3 = \cf4 "<p>\{0\}</p> \\n\\n <p>\{1\}</p>"\cf3 .\cf5\b format\cf3\b0 (\cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Description_Summary\cf3 .\cf5\b notNull\cf3\b0 () \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab ? \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Description_Summary \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab : \cf4 ""\cf3 , \par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf5\b notNull\cf3\b0 () && \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf2 Text\cf3 .\cf5\b size\cf3\b0 () > \cf10 0\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf3 ? \cf2 weakness\cf3 .\cf2 Description\cf3 .\cf2 Extended_Description\cf3 .\cf2 Text\cf3 .\cf5\b toList\cf3\b0 ().\cf1 join\cf3 (\cf4 "\\n"\cf3 )\par
+\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab\cf2 : \cf4 ""\cf3 );\par
+\tab\par
+\tab\par
+\tab\cf1 var \cf2 cweWeakNess \cf3 = \cf6\b new \cf5 CWE_Weakness\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab\tab\{\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Title\tab\tab\cf3 = \cf4 "\{0\} - \{1\}"\cf3 .\cf5\b format\cf3\b0 (\cf2 weakness\cf3 .\cf2 ID\cf3 ,\cf2 weakness\cf3 .\cf2 Name\cf3 ),\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Technology  \cf3 = \cf2 technology\cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Type \tab\tab\cf3 = \cf2 weakness\cf3 .\cf2 Status\cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Phase \tab\tab\cf3 = \cf2 phase \cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Category \tab\cf3 = \cf4 "CWE" \cf3 ,\par
+\tab\tab\tab\tab\tab\tab\tab\tab\cf2 Content \tab\cf3 = \cf2 content\tab\tab\tab\tab\tab\tab\tab\tab\par
+\tab\tab\tab\tab\tab\tab\tab\cf3\};\par
+\tab\cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf9 add\cf3 (\cf2 cweWeakNess\cf3 );\tab\tab\tab\tab\tab\par
+ \par
+ \}\par
+\cf1 var \cf2 mappedXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "Cwe_data.xml"\cf3 );\par
+\cf2 cweData\cf3 .\cf5\b saveAs\cf3\b0 (\cf2 mappedXml\cf3 );\par
+\cf1 return \cf4 "Content saved to: \{0\}"\cf3 .\cf5\b format\cf3\b0 (\cf2 mappedXml\cf3 );\par
+\par
+\cf7 //O2File:cwe_schema_v5.1.cs\par
+//O2File:CWE_Data.cs\par
+\pard\sa200\sl276\slmult1 //O2Ref:O2_Misc_Microsoft_MPL_Libs.dll\cf0\lang9\b\f0\fs22\par
+(note: the above script is include in O2's scripts and is called \i Util - Creating CWE_Data object from CWE Xml file.h2\i0 )\par
+\par
+------------------------------------------------------------\par
+Now that we have a normalized CWE file lets create the TeamMentor project\par
+------------------------------------------------------------\par
+Logging in into teamMentor:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://localhost:12115"\cf3 );\par
+\par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 teamMentor\cf3 .\cf5\b isLoggedIn\cf3\b0 ();\par
+\pard\cf7 //using SecurityInnovation.TeamMentor \par
+//O2File:C:\\_WorkDir\\O2\\_tests\\TM_UnitTests\\APIs\\API_TeamMentor_WebServices.cs\par
+\pard\sa200\sl276\slmult1 //O2Ref:System.Web.Services.dll\cf0\lang9\f0\fs22\par
+\b Get Current User roles:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://127.0.0.1:12115"\cf3 ); \par
+\par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 teamMentor\cf3 .\cf5\b currentUser_Roles\cf3\b0 ();\cf0\lang9\f0\fs22\par
+\b get Current Libraries\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://127.0.0.1:12115"\cf3 ); \par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 teamMentor\cf3 .\cf5\b libraries\cf3\b0 ();\cf0\lang9\f0\fs22\par
+\b Create/Get CWE Library\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://127.0.0.1:12115"\cf3 ); \par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\par
+\cf1 var \cf2 cweLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 cweLibrary\cf3 ;\cf0\lang9\f0\fs22\par
+\b Get -> Delete -> Create CWE library\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 cweLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 )\par
+\tab\tab\tab\tab\tab\tab    .\cf5\b delete\cf3\b0 ()\par
+\tab\tab\tab\tab\tab\tab    .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 cweLibrary\cf3 ;\cf0\lang9\f0\fs22\par
+\b Create View:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 cweLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\cf1 var \cf2 cweWeakness \cf3 = \cf2 cweLibrary\cf3 .\cf5\b add_View\cf3\b0 (\cf4 "Weaknesses"\cf3 );\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 cweWeakness\cf3 ;\cf0\lang9\f0\fs22\par
+\b Loading CWE Data (from XML file)\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 editorPwd \cf3 = \cf4 "123qwe"\cf3 ;\par
+\par
+\cf1 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 mappedXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "Cwe_data.xml"\cf3 );\par
+\cf1 var \cf2 cweData \cf3 = \cf2 mappedXml\cf3 .\cf2 load\cf3 <\cf2 CWE_Data\cf3 >();\par
+\par
+\par
+\cf1 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://localhost:12115"\cf3 );\par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\par
+\cf7 //using SecurityInnovation.TeamMentor \par
+//O2File:C:\\_WorkDir\\O2\\_tests\\TM_UnitTests\\APIs\\API_TeamMentor_WebServices.cs\par
+//O2File:CWE_Data.cs\par
+//O2Ref:System.Web.Services.dll\par
+\par
+\pard\sa200\sl276\slmult1\cf0\lang9\b\f0\fs22 Creating 10 articles in Weaknesses View\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 cweData \cf3 = \cf2 mappedXml\cf3 .\cf2 load\cf3 <\cf2 CWE_Data\cf3 >();\par
+\par
+\par
+\cf1 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://localhost:12115"\cf3 );\par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 ();\par
+\par
+\cf1 var \cf2 tmLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\cf1 var \cf2 tmView \cf3 = \cf2 tmLibrary\cf3 .\cf5\b add_View\cf3\b0 (\cf4 "Weaknesses"\cf3 );\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b Take\cf3\b0 (\cf10 10\cf3 ))\par
+\{\par
+\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 , \cf2 weakness\cf3 .\cf2 Content\cf3 );\par
+\}\par
+\pard\sa200\sl276\slmult1\cf1 return \cf4 "done"\cf3 ;\cf0\lang9\f0\fs22\par
+\b testing populating metadata fields and viewing TM site in browser window\par
+\pard\cf4\lang1031\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b Take\cf3\b0 (\cf10 10\cf3 ))\par
+\{\par
+\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf4 "1"\cf3 ,\cf4 "2"\cf3 ,\cf4 "3"\cf3 ,\cf4 "4"\cf3 );\par
+\}\par
+\pard\sa200\sl276\slmult1\cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_WebBrowser_Control\cf3\b0 ().\cf5\b open\cf3\b0 (\cf2 tmSite\cf3 );\cf0\lang9\f0\fs22\par
+\b Populating metadata\par
+\pard\cf4\lang1031\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b Take\cf3\b0 (\cf10 10\cf3 ))\par
+\{\par
+\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf2 weakness\cf3 .\cf2 Technology\cf3 ,\cf2 weakness\cf3 .\cf2 Phase\cf3 , \cf2 weakness\cf3 .\cf2 Type\cf3 , \cf2 weakness\cf3 .\cf2 Category\cf3 );\par
+\}\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+\b Adding all articles\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 tmLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\cf1 var \cf2 tmView \cf3 = \cf2 tmLibrary\cf3 .\cf5\b add_View\cf3\b0 (\cf4 "Weaknesses"\cf3 );\par
+\cf1 var \cf2 itemsProcessed \cf3 = \cf10 0\cf3 ;\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 )\par
+\{\par
+\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf2 weakness\cf3 .\cf2 Technology\cf3 ,\cf2 weakness\cf3 .\cf2 Phase\cf3 , \cf2 weakness\cf3 .\cf2 Type\cf3 , \cf2 weakness\cf3 .\cf2 Category\cf3 );\par
+\tab\cf4\b if \cf3\b0 (\cf2 itemsProcessed\cf3 ++.\cf5\b mod0\cf3\b0 (\cf10 30\cf3 ))\par
+\tab\tab\cf4 "[\{0\}/\{1\}]"\cf3 .\cf5\b info\cf3\b0 (\cf2 itemsProcessed\cf3 , \cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b size\cf3\b0 ()); \par
+\pard\sa200\sl276\slmult1\}\cf0\lang9\f0\fs22\par
+\b Creating a Folder mapped by Phase: \par
+Start by creating a filtered view of the data:\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 tmLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE"\cf3 );\par
+\cf1 var \cf2 weakness_By_Phase \cf3 = \cf6\b new \cf2\b0 Dictionary\cf3 <\cf8 string\cf3 ,\cf2 List\cf3 <\cf2 CWE_Weakness\cf3 >>();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 )\par
+\{\par
+\tab\cf4\b foreach\cf3\b0 (\cf1 var \cf2 phase \cf4\b in \cf2\b0 weakness\cf3 .\cf2 Phase\cf3 .\cf5\b split\cf3\b0 (\cf4 ","\cf3 ))\par
+\tab\tab\cf2 weakness_By_Phase\cf3 .\cf9 add\cf3 (\cf2 phase\cf3 .\cf5\b trim\cf3\b0 (), \cf2 weakness\cf3 );\par
+\}\par
+\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 weakness_By_Phase\cf3 ;\cf0\lang9\f0\fs22\par
+Create a folder to hold a view per phase:\par
+\pard\cf4\lang1031\b\f1\fs18 foreach\cf3\b0 (\cf1 var \cf2 item \cf4\b in \cf2\b0 weakness_By_Phase\cf3 )\par
+\{\par
+\tab\cf1 var \cf2 tmView \cf3 = \cf2 tmFolder\cf3 .\cf5\b add_View\cf3\b0 (\cf2 item\cf3 .\cf2 Key\cf3 );\par
+\tab\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 item\cf3 .\cf2 Value\cf3 )\par
+\tab\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf2 weakness\cf3 .\cf2 Technology\cf3 , \cf2 item\cf3 .\cf2 Key\cf3 , \cf2 weakness\cf3 .\cf2 Type\cf3 , \cf2 weakness\cf3 .\cf2 Category\cf3 );\par
+\tab\tab\par
+\tab\cf4\b if \cf3\b0 (\cf2 itemsProcessed\cf3 ++.\cf5\b mod0\cf3\b0 (\cf10 30\cf3 ))\par
+\tab\tab\cf4 "[\{0\}/\{1\}]"\cf3 .\cf5\b info\cf3\b0 (\cf2 itemsProcessed\cf3 , \cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b size\cf3\b0 ()); \par
+\tab\par
+ \}\par
+\par
+\cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_WebBrowser_Control\cf3\b0 ().\cf5\b open\cf3\b0 (\cf2 tmSite\cf3 ); \par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+\b Complete script which creates two libraries:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 );\par
+\cf1 var \cf2 mappedXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "Cwe_data.xml"\cf3 );\par
+\cf1 var \cf2 cweData \cf3 = \cf2 mappedXml\cf3 .\cf2 load\cf3 <\cf2 CWE_Data\cf3 >();\par
+\par
+\cf1 var \cf2 tmSite \cf3 = \cf4 "{\field{\*\fldinst{HYPERLINK "http://localhost.:12115"}}{\fldrslt{\ul\cf4 http://localhost.:12115}}}\f1\fs18 "\cf3 ;\par
+\cf1 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf2 tmSite\cf3 );\par
+\par
+\par
+\cf2 teamMentor\cf3 .\cf5\b login\cf3\b0 (\cf4 "editor"\cf3 ,\cf2 editorPwd\cf3 ).\cf5\b str\cf3\b0 (); \par
+ \par
+\cf1 var \cf2 tmLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE_by_Phase"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE_by_Phase"\cf3 );\par
+\par
+\cf1 var \cf2 weakness_By_Phase \cf3 = \cf6\b new \cf2\b0 Dictionary\cf3 <\cf8 string\cf3 ,\cf2 List\cf3 <\cf2 CWE_Weakness\cf3 >>();\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 )\par
+\{\par
+\tab\cf4\b foreach\cf3\b0 (\cf1 var \cf2 phase \cf4\b in \cf2\b0 weakness\cf3 .\cf2 Phase\cf3 .\cf5\b split\cf3\b0 (\cf4 ","\cf3 ))\par
+\tab\tab\cf2 weakness_By_Phase\cf3 .\cf9 add\cf3 (\cf2 phase\cf3 .\cf5\b trim\cf3\b0 (), \cf2 weakness\cf3 );\par
+\}\par
+\cf1 var \cf2 tmFolder \cf3 = \cf2 tmLibrary\cf3 .\cf5\b add_Folder\cf3\b0 (\cf4 "Weakness by Phase"\cf3 );\par
+\par
+\cf1 var \cf2 itemsProcessed \cf3 = \cf10 0\cf3 ;\par
+\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 item \cf4\b in \cf2\b0 weakness_By_Phase\cf3 )\par
+\{\par
+\tab\cf1 var \cf2 tmView \cf3 = \cf2 tmFolder\cf3 .\cf5\b add_View\cf3\b0 (\cf2 item\cf3 .\cf2 Key\cf3 );\par
+\tab\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 item\cf3 .\cf2 Value\cf3 )\par
+\tab\tab\cf2 tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf2 weakness\cf3 .\cf2 Technology\cf3 , \cf2 item\cf3 .\cf2 Key\cf3 , \cf2 weakness\cf3 .\cf2 Type\cf3 , \cf2 weakness\cf3 .\cf2 Category\cf3 );\par
+\tab\tab\par
+\tab\cf4\b if \cf3\b0 (\cf2 itemsProcessed\cf3 ++.\cf5\b mod0\cf3\b0 (\cf10 30\cf3 ))\par
+\tab\tab\cf4 "[\{0\}/\{1\}]"\cf3 .\cf5\b info\cf3\b0 (\cf2 itemsProcessed\cf3 , \cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b size\cf3\b0 ()); \par
+\tab\par
+ \}\par
+ \par
+\cf7 //Creating a view with all Items\par
+\cf2 tmLibrary \cf3 = \cf2 teamMentor\cf3 .\cf5\b library\cf3\b0 (\cf4 "CWE_All"\cf3 ).\cf5\b delete\cf3\b0 ().\cf5\b library\cf3\b0 (\cf4 "CWE_All"\cf3 );\par
+\cf1 var \cf2 _tmView \cf3 = \cf2 tmLibrary\cf3 .\cf5\b add_View\cf3\b0 (\cf4 "Weaknesses"\cf3 );\par
+\cf2 itemsProcessed \cf3 = \cf10 0\cf3 ;\par
+\cf4\b foreach\cf3\b0 (\cf1 var \cf2 weakness \cf4\b in \cf2\b0 cweData\cf3 .\cf2 Weaknesses\cf3 )\par
+\{\par
+\tab\cf2 _tmView\cf3 .\cf5\b add_Article\cf3\b0 (\cf2 weakness\cf3 .\cf2 Title\cf3 ,\cf2 weakness\cf3 .\cf2 Content\cf3 , \cf2 weakness\cf3 .\cf2 Technology\cf3 ,\cf2 weakness\cf3 .\cf2 Phase\cf3 , \cf2 weakness\cf3 .\cf2 Type\cf3 , \cf2 weakness\cf3 .\cf2 Category\cf3 );\par
+\tab\cf4\b if \cf3\b0 (\cf2 itemsProcessed\cf3 ++.\cf5\b mod0\cf3\b0 (\cf10 30\cf3 ))\par
+\tab\tab\cf4 "[\{0\}/\{1\}]"\cf3 .\cf5\b info\cf3\b0 (\cf2 itemsProcessed\cf3 , \cf2 cweData\cf3 .\cf2 Weaknesses\cf3 .\cf5\b size\cf3\b0 ()); \par
+\}\par
+\par
+\cf2 panel\cf3 .\cf5\b clear\cf3\b0 ().\cf5\b add_WebBrowser_Control\cf3\b0 ().\cf5\b open\cf3\b0 (\cf2 tmSite\cf3 ); \par
+\par
+\par
+\par
+\cf1 return \cf4 "done"\cf3 ;\par
+\cf7 //using SecurityInnovation.TeamMentor \par
+//O2File:C:\\_WorkDir\\O2\\_tests\\TM_UnitTests\\APIs\\API_TeamMentor_WebServices.cs\par
+//O2File:CWE_Data.cs\par
+//O2Ref:System.Web.Services.dll\par
+\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+.\par
+.\par
+\b Conflicting View definitions\par
+\b0 if you try to consume both \cf7\lang1031\f1\fs18 API_TeamMentor_WebServices.cs \cf0\lang9\f0\fs22 and \cf7\lang1031\f1\fs18 cwe_schema_v5.1.cs \cf0\lang9\f0\fs22 :\b\par
+\pard\cf7\lang1031\b0\f1\fs18 //var topPanel = O2Gui.open<Panel>("\{name\}",700,400);\par
+\cf1 var \cf2 editorPwd \cf3 = \cf4 "123qwe"\cf3 ;\par
+ \par
+\cf1 var \cf2 teamMentor \cf3 = \cf6\b new \cf5 API_TeamMentor_WebServices\cf3\b0 (\cf4 "http://127.0.0.1:12115"\cf3 ); \par
+\par
+\cf1 var \cf2 targetDir \cf3 = \cf4 "_CWE_Data"\cf3 .\cf5\b tempDir\cf3\b0 (\cf6\b false\cf3\b0 ); \par
+\cf1 var \cf2 cweXml \cf3 = \cf2 targetDir\cf3 .\cf5\b pathCombine\cf3\b0 (\cf4 "2000.xml"\cf3 );\par
+\cf1 var \cf2 catalog \cf3 = \cf2 Weakness_Catalog\cf3 .\cf5\b Load\cf3\b0 (\cf2 cweXml\cf3 );\par
+ \par
+\cf7 //using SecurityInnovation.TeamMentor \par
+//O2File:C:\\_WorkDir\\O2\\_tests\\TM_UnitTests\\APIs\\API_TeamMentor_WebServices.cs\par
+//O2File:cwe_schema_v5.1.cs\par
+//O2Ref:O2_Misc_Microsoft_MPL_Libs.dll\par
+\pard\sa200\sl276\slmult1 //O2Ref:System.Web.Services.dll\cf0\lang9\f0\fs22\par
+you will get this error because there are two definitions of View (from TeamMentor WebServices WSDL and one from CWE XSD)\par
+\pard\cf8\lang1033\f2\fs17 [8:13:22 PM] ERROR: Compilation failed: 694::22::CS0263::Partial declarations of 'View' must not specify different base classes::...\\O2.Platform.Scripts\\APIs\\CWE\\cwe_schema_v5.1.cs\par
+\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+}
+ 

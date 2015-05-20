@@ -1,0 +1,15 @@
+7-Zip example:
+
+//var topPanel = O2Gui.open<Panel>("{name}",700,400);
+
+var _7_Zip = new _7_Zip();
+
+var zipFile = "https://github.com/downloads/ataranto/CefSharp/CefSharp-0.11-bin.7z";
+return _7_Zip.execute_withParams("");
+//return zipFile.download();
+//var file = @"E:\O2_V4\_O2_V4_TempDir\5_24_2012\CefSharp-0.11-bin.7z"; 
+//var targetDir = "_tempZip".tempDir(false);
+//return _7_Zip.unzip(file, targetDir);
+//return _7_Zip.get_FilesList_Raw(file);
+
+//O2File:_7-Zip.css

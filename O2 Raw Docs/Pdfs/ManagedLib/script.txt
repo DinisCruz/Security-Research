@@ -1,0 +1,63 @@
+var form1 = (Form1)propertyGrid.parentForm();
+var tabControl = propertyGrid.parentForm().control<TabControl>(true);
+var eventFilterDialog = (EventFilterDialog)propertyGrid.parentForm().field("dialog");
+
+//Check if already added a control to the right of tabControl and if so we need to  remove it
+var splitContainer = form1.field("splitContainer1") as SplitContainer;
+var newRightPanelIsThere = splitContainer.Panel2.controls().first() is SplitContainer; 
+
+var dataGridView = (newRightPanelIsThere) 
+					 	? splitContainer.Panel2.controls<DataGridView>(true).second()
+						: eventFilterDialog.control<DataGridView>().columnWidth(0,-1).columnWidth(1,50);
+
+if (newRightPanelIsThere)
+	tabControl.splitContainer().parent().clear().add_Control(tabControl);
+
+
+var rightPanel = tabControl.insert_Right("Event Filters");	
+
+rightPanel.add_Control(dataGridView);
+
+Action resetFilters = 
+	()=>{
+			var currentProxy = propertyGrid.SelectedObject as ControlProxy;
+			if (currentProxy != null) 
+			{
+				"Setting filters for: {0}".info(currentProxy);
+//(dialog.EventList[ed.Name].Display				
+				foreach (EventDescriptor ed in currentProxy.GetEvents()) 
+				//{
+					"event: {0}".info(ed.Name, eventFilterDialog.EventList[ed.Name]);
+				//	currentProxy.UnsubscribeEvent(ed);
+				//}
+			}
+		};
+
+resetFilters();
+		
+dataGridView.onClick(
+	(row,cell)=>{				
+					if (cell ==1)
+					{	
+						resetFilters();
+					}						
+				});
+
+
+
+Action<bool> setDisplayForAllEvents = 
+	(value)=>{
+				dataGridView.Rows.forEach(
+					(DataGridViewRow row)=> row.Cells[1].Value = value);
+			 };
+dataGridView.add_ContextMenu()
+			.add_MenuItem("DeSelect All",true,  ()=>setDisplayForAllEvents(false))
+			.add_MenuItem("Select All", ()=>setDisplayForAllEvents(true));
+			
+return "done";
+
+//using System.ComponentModel
+//using Microsoft.ManagedSpy
+//using ManagedSpy;
+//O2Ref:ManagedSpyLib.dll
+//O2Ref:ManagedSpy.dll

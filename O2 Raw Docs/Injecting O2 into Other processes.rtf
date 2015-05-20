@@ -1,0 +1,149 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green128\blue0;\red0\green0\blue255;\red0\green0\blue0;\red0\green100\blue0;\red255\green0\blue0;\red165\green42\blue42;\red25\green25\blue112;\red0\green0\blue128;\red0\green139\blue139;\red0\green0\blue139;\red0\green128\blue128;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs40 Injecting O2 into Other processes\fs22\par
+Using the ... script to execute these\par
+\b Loading O2_FluentSharp_CoreLib.dll and invoke the log and start process methods\par
+\pard\cf1\lang1031\b0\f1\fs18 // This file is part of the OWASP O2 Platform ({\field{\*\fldinst{HYPERLINK "http://www.owasp.org/index.php/OWASP_O2_Platform"}}{\fldrslt{\ul\cf2 http://www.owasp.org/index.php/OWASP_O2_Platform}}}\f1\fs18 ) and is released under the Apache 2.0 License ({\field{\*\fldinst{HYPERLINK "http://www.apache.org/licenses/LICENSE-2.0"}}{\fldrslt{\ul\cf2 http://www.apache.org/licenses/LICENSE-2.0}}}\f1\fs18 )\par
+\b using \cf3\b0 System\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Diagnostics\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Reflection\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Linq\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Collections\cf4 .\cf3 Generic\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Windows\cf4 .\cf3 Forms\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Text\cf4 ;\par
+\cf1\b using \cf3\b0 O2\cf4 .\cf3 Kernel\cf4 ;\par
+\cf1\b using \cf3\b0 O2\cf4 .\cf3 Kernel\cf4 .\cf3 ExtensionMethods\cf4 ;\par
+\cf1 /*using O2.DotNetWrappers.DotNet;\par
+using O2.DotNetWrappers.Windows;\par
+using O2.DotNetWrappers.ExtensionMethods;\par
+using O2.Views.ASCX.classes.MainGUI;\par
+using O2.Views.ASCX.ExtensionMethods;\par
+using O2.External.SharpDevelop.ExtensionMethods;\par
+*/\par
+\b namespace \cf3\b0 O2\cf4 .\cf3 Script\par
+\cf4\{\par
+    \cf2\b public \cf5\b0 class \cf3 Test\par
+    \cf4\{    \par
+    \tab\cf6 static \cf5 string  \cf3 assemblyLocation \cf4 = \cf2 @"E:\\O2_V4\\O2.Platform.Projects\\binaries\\O2_FluentSharp_CoreLib.dll"\cf4 ;\par
+\tab\tab\cf6 static \cf3 Assembly assembly \cf4 = \cf3 Assembly\cf4 .\cf7\b LoadFrom\cf4\b0 (\cf3 assemblyLocation\cf4 );\par
+\tab\tab\tab\tab\par
+    \tab\cf2\b public \cf6\b0 static \cf5 void \cf7\b sendLogMessage\cf4\b0 (\cf5 string \cf3 message\cf4 )\par
+    \tab\{\par
+    \tab\tab\cf8 var \cf3 type \cf4 = \cf3 assembly\cf4 .\cf7\b GetType\cf4\b0 (\cf2 "O2.Kernel.PublicDI"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 method \cf4 = \cf3 type\cf4 .\cf7\b GetMethod\cf4\b0 (\cf2 "get_log"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 kConfig \cf4 = \cf3 method\cf4 .\cf7\b Invoke\cf4\b0 (\cf3\b null\cf4\b0 , \cf9\b new \cf5\b0 object\cf4 [] \{ \});\par
+\tab\tab\tab\cf8 var \cf3 info \cf4 = \cf3 kConfig\cf4 .\cf7\b GetType\cf4\b0 ().\cf7\b GetMethod\cf4\b0 (\cf2 "i"\cf4 );\par
+\tab\tab\tab\cf3 info\cf4 .\cf7\b Invoke\cf4\b0 (\cf3 kConfig\cf4 , \cf9\b new \cf5\b0 object\cf4 [] \{ \cf3 message\cf4\});\par
+    \tab\}\par
+    \tab\par
+    \tab\cf2\b public \cf6\b0 static \cf5 void \cf7\b startProcess\cf4\b0 (\cf5 string \cf3 exe\cf4 )\par
+    \tab\{\par
+    \tab\tab\cf8 var \cf3 type \cf4 = \cf3 assembly\cf4 .\cf7\b GetType\cf4\b0 (\cf2 "O2.Kernel.exec"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 obj \cf4 = \cf3 Activator\cf4 .\cf7\b CreateInstance\cf4\b0 (\cf3 type\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 cmd \cf4 = \cf3 type\cf4 .\cf7\b GetMethods\cf4\b0 ()[\cf10 0\cf4 ];\tab\tab\tab\tab\par
+\tab\tab\tab\cf3 cmd\cf4 .\cf7\b Invoke\cf4\b0 (\cf3 obj\cf4 , \cf9\b new \cf5\b0 object\cf4 [] \{ \cf3 exe \cf4\});\par
+    \tab\}\par
+    \tab\par
+\tab\tab\cf2\b public \cf6\b0 static \cf5 string \cf7\b GoBabyGo\cf4\b0 ()  \par
+\tab\tab\{\par
+\tab\tab\tab\cf11\b try\par
+\tab\tab\tab\cf4\b0\{\par
+\tab\tab\tab\tab\cf3 Debug\cf4 .\cf7\b Write\cf4\b0 (\cf2 ">> Inside GoBabyGo method in Process " \cf4 + \cf3 System\cf4 .\cf3 Diagnostics\cf4 .\cf3 Process\cf4 .\cf7\b GetCurrentProcess\cf4\b0 ().\cf3 ProcessName\cf4 );\par
+\tab\tab\tab\tab\cf7\b sendLogMessage\cf4\b0 (\cf2 "a message from O2"\cf4 ); \par
+\tab\tab\tab\tab\cf7\b sendLogMessage\cf4\b0 (\cf2 "Starting nodepad"\cf4 );\par
+\tab\tab\tab\tab\cf7\b startProcess\cf4\b0 (\cf2 "notepad.exe"\cf4 );\par
+\tab\tab\tab\tab\cf8 return \cf2 ">> done"\cf4 ;\tab\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf11\b catch\cf4\b0 (\cf3 Exception ex\cf4 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf8 return \cf2 "Error: " \cf4 + \cf3 ex\cf4 .\cf3 Message\cf4 ;\par
+\tab\tab\tab\}\par
+\tab\tab\tab\par
+\cf1\tab\tab\cf4\}\par
+    \}\par
+\}\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+List Loaded Modules Names\par
+\par
+\pard\cf1\lang1031\f1\fs18 // This file is part of the OWASP O2 Platform ({\field{\*\fldinst{HYPERLINK "http://www.owasp.org/index.php/OWASP_O2_Platform"}}{\fldrslt{\ul\cf2 http://www.owasp.org/index.php/OWASP_O2_Platform}}}\f1\fs18 ) and is released under the Apache 2.0 License ({\field{\*\fldinst{HYPERLINK "http://www.apache.org/licenses/LICENSE-2.0"}}{\fldrslt{\ul\cf2 http://www.apache.org/licenses/LICENSE-2.0}}}\f1\fs18 )\par
+\b using \cf3\b0 System\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Diagnostics\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Reflection\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Linq\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Collections\cf4 .\cf3 Generic\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Windows\cf4 .\cf3 Forms\cf4 ;\par
+\cf1\b using \cf3\b0 System\cf4 .\cf3 Text\cf4 ;\par
+\cf1\b using \cf3\b0 O2\cf4 .\cf3 Kernel\cf4 ;\par
+\cf1\b using \cf3\b0 O2\cf4 .\cf3 Kernel\cf4 .\cf3 ExtensionMethods\cf4 ;\par
+\cf1 /*using O2.DotNetWrappers.DotNet;\par
+using O2.DotNetWrappers.Windows;\par
+using O2.DotNetWrappers.ExtensionMethods;\par
+using O2.Views.ASCX.classes.MainGUI;\par
+using O2.Views.ASCX.ExtensionMethods;\par
+using O2.External.SharpDevelop.ExtensionMethods;\par
+*/\par
+\b namespace \cf3\b0 O2\cf4 .\cf3 Script\par
+\cf4\{\par
+    \cf2\b public \cf5\b0 class \cf3 Test\par
+    \cf4\{    \par
+    \tab\cf6 static \cf3 Process CurrentProcess \cf4 = \cf3 System\cf4 .\cf3 Diagnostics\cf4 .\cf3 Process\cf4 .\cf7\b GetCurrentProcess\cf4\b0 ();\par
+    \tab\cf6 static \cf5 string  \cf3 assemblyLocation \cf4 = \cf2 @"E:\\O2_V4\\O2.Platform.Projects\\binaries\\O2_FluentSharp_CoreLib.dll"\cf4 ;\par
+\tab\tab\cf6 static \cf3 Assembly assembly \cf4 = \cf3 Assembly\cf4 .\cf7\b LoadFrom\cf4\b0 (\cf3 assemblyLocation\cf4 );\par
+\tab\tab\tab\par
+    \tab\cf2\b public \cf6\b0 static \cf5 void \cf7\b info\cf4\b0 (\cf5 string \cf3 message\cf4 )\par
+    \tab\{\par
+    \tab\tab\cf8 var \cf3 type \cf4 = \cf3 assembly\cf4 .\cf7\b GetType\cf4\b0 (\cf2 "O2.Kernel.PublicDI"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 method \cf4 = \cf3 type\cf4 .\cf7\b GetMethod\cf4\b0 (\cf2 "get_log"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 kConfig \cf4 = \cf3 method\cf4 .\cf7\b Invoke\cf4\b0 (\cf3\b null\cf4\b0 , \cf9\b new \cf5\b0 object\cf4 [] \{ \});\par
+\tab\tab\tab\cf8 var \cf3 info \cf4 = \cf3 kConfig\cf4 .\cf7\b GetType\cf4\b0 ().\cf7\b GetMethod\cf4\b0 (\cf2 "i"\cf4 );\par
+\tab\tab\tab\cf3 info\cf4 .\cf7\b Invoke\cf4\b0 (\cf3 kConfig\cf4 , \cf9\b new \cf5\b0 object\cf4 [] \{ \cf3 message\cf4\});\par
+    \tab\}\par
+    \tab\par
+    \tab\cf2\b public \cf6\b0 static \cf5 void \cf7\b startProcess\cf4\b0 (\cf5 string \cf3 exe\cf4 )\par
+    \tab\{\par
+    \tab\tab\cf8 var \cf3 type \cf4 = \cf3 assembly\cf4 .\cf7\b GetType\cf4\b0 (\cf2 "O2.Kernel.exec"\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 obj \cf4 = \cf3 Activator\cf4 .\cf7\b CreateInstance\cf4\b0 (\cf3 type\cf4 );\par
+\tab\tab\tab\cf8 var \cf3 cmd \cf4 = \cf3 type\cf4 .\cf7\b GetMethods\cf4\b0 ()[\cf10 0\cf4 ];\tab\tab\tab\tab\par
+\tab\tab\tab\cf3 cmd\cf4 .\cf7\b Invoke\cf4\b0 (\cf3 obj\cf4 , \cf9\b new \cf5\b0 object\cf4 [] \{ \cf3 exe \cf4\});\par
+    \tab\}\par
+    \tab\par
+    \tab\cf2\b public \cf6\b0 static \cf5 void \cf7\b listLoadedAssemblies\cf4\b0 ()\par
+    \tab\{\par
+    \tab\tab\cf2\b foreach\cf4\b0 (\cf3 ProcessModule module \cf2\b in \cf3\b0 CurrentProcess\cf4 .\cf3 Modules\cf4 )\par
+    \tab\tab\{\par
+    \tab\tab\tab\cf7\b info\cf4\b0 (\cf3 module\cf4 .\cf3 ModuleName\cf4 );\par
+    \tab\tab\}\tab\par
+    \tab\}\par
+    \tab\par
+    \tab\par
+\tab\tab\cf2\b public \cf6\b0 static \cf5 string \cf7\b GoBabyGo\cf4\b0 ()  \par
+\tab\tab\{\par
+\tab\tab\tab\cf11\b try\par
+\tab\tab\tab\cf4\b0\{\par
+\tab\tab\tab\tab\cf3 Debug\cf4 .\cf7\b Write\cf4\b0 (\cf2 ">> Inside GoBabyGo method in Process " \cf4 +\cf3 CurrentProcess\cf4 .\cf3 ProcessName\cf4 );\par
+\tab\tab\tab\tab\cf7\b info\cf4\b0 (\cf2 "a message from O2"\cf4 ); \par
+\tab\tab\tab\tab\cf7\b listLoadedAssemblies\cf4\b0 ();\par
+\tab\tab\tab\cf1 //\tab info("Starting nodepad");\par
+\tab\tab\tab //\tab startProcess("notepad.exe");\par
+\tab\tab\tab\tab\cf8 return \cf2 ">> done"\cf4 ;\tab\tab\tab\tab\par
+\tab\tab\tab\}\par
+\tab\tab\tab\cf11\b catch\cf4\b0 (\cf3 Exception ex\cf4 )\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab\cf8 return \cf2 "Error: " \cf4 + \cf3 ex\cf4 .\cf3 Message\cf4 ;\par
+\tab\tab\tab\}\tab\tab\cf1\par
+\tab\tab\cf4\}\par
+    \}\par
+\}\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+}
+ 

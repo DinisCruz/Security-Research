@@ -1,0 +1,21 @@
+Loading ozasmt file from ounce 8.6
+
+//var topPanel = O2Gui.open<Panel>("{name}",700,400);
+var assemment = new O2AssessmentLoad_OunceV7_0();
+
+var ozasmtFile = @"E:\_Tests\AppScanSource_8_6\8.6_files\8.6_files\AltoroJ_2.5 _Callbacks.ozasmt";
+var findingsViewer = panel.add_FindingsViewer(true);
+
+
+var assessment = assemment.loadFile(ozasmtFile);
+findingsViewer.loadO2Findings(assessment.o2Findings);
+
+return ozasmtFile.fileExists();
+
+//using O2.XRules.ThirdPary.IBM
+//using O2.XRules.Database.Findings
+//O2File:O2AssessmentLoad_OunceV7_0.cs
+//O2File:OzasmUtils_OunceV7_0.cs
+//O2File:xsd_Ozasmt_OunceV7_0.cs 
+//O2File:Findings_ExtensionMethods.cs
+//O2Tag_DontAddExtraO2Files

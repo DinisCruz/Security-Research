@@ -1,0 +1,249 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue128;\red0\green0\blue0;\red0\green100\blue0;\red0\green128\blue0;\red25\green25\blue112;\red0\green0\blue255;\red0\green139\blue139;\red255\green20\blue147;\red0\green0\blue139;\red128\green128\blue128;\red255\green0\blue0;\red165\green42\blue42;\red139\green69\blue19;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\b\f0\fs40 Scripting Microsoft.VisualStudio.Shell\fs22\par
+\b0 These scripts need to be executed inside an O2 REPL editor running inside VisualStudio and with the O2_FluentSharp_VSIX  open\par
+Namespaces and exposed objects\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 vsixPackage \tab\tab\cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 vsixPackage\cf3 ;\par
+\cf1 var \cf2 dte \tab\tab\tab\cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 dte\cf3 ;\par
+\cf1 var \cf2 errorListProvider \tab\cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 errorListProvider;\par
+\cf1 var \cf2 uiShell \tab\tab\tab\cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 uiShell;\par
+\cf3\par
+\cf1 return \cf2 dte\cf3 ;\par
+\par
+\par
+\cf4 //generateDebugSymbols\par
+//using Microsoft.VisualStudio.Shell.Interop\par
+//using O2.FluentSharp.VSIX;\par
+//O2Ref:O2_FluentSharp_VSIX.dll\par
+//O2Ref:EnvDTE.dll\par
+//O2Ref:EnvDTE80.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.10.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.dll\par
+//O2Ref:Microsoft.VisualStudio.OLE.Interop.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.8.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.9.0.dll\par
+\pard\sa200\sl276\slmult1 //O2Ref:Microsoft.VisualStudio.Shell.Interop.10.0.dll\cf0\lang9\f0\fs22\par
+\par
+\b IVsSolution -> Get Solution:\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 vsixPackage \cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 vsixPackage\cf3 ;\par
+\cf1 var \cf2 ivsSolution \cf3 = (\cf2 IVsSolution\cf3 )\cf2 vsixPackage\cf3 .\cf5\b invoke\cf3\b0 (\cf6 "GetService"\cf3 ,\cf7\b typeof\cf3\b0 (\cf2 IVsSolution\cf3 ));\par
+\par
+\cf1 var \cf2 pbstrSolutionDirectory \cf3 = \cf6 ""\cf3 ;\par
+\cf1 var \cf2 pbstrSolutionFile \cf3 = \cf6 ""\cf3 ; \par
+\cf1 var \cf2 pbstrUserOptsFile \cf3 = \cf6 ""\cf3 ;\par
+\cf2 ivsSolution\cf3 .\cf5\b GetSolutionInfo\cf3\b0 (\cf8\b out \cf2\b0 pbstrSolutionDirectory\cf3 , \cf8\b out \cf2\b0 pbstrSolutionFile\cf3 , \cf8\b out \cf2\b0 pbstrUserOptsFile\cf3 );\par
+\cf1 return \cf6 " \{0\} - \{1\} - \{2\}"\cf3 .\cf5\b format\cf3\b0 (\cf2 pbstrSolutionDirectory\cf3 , \cf2 pbstrSolutionFile\cf3 , \cf2 pbstrUserOptsFile\cf3 );\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+\b How to add an Item to the TaskItem:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 vsixPackage \tab\tab\cf3 = \cf2 O2_FluentSharp_VSIXPackage\cf3 .\cf2 vsixPackage\cf3 ; \cf4 // this is a reference to an Package object \par
+\par
+\cf1 var \cf2 ivsSolution \tab\tab\cf3 = (\cf2 IVsSolution\cf3 )\cf2 Package\cf3 .\cf5\b GetGlobalService\cf3\b0 (\cf7\b typeof\cf3\b0 (\cf2 IVsSolution\cf3 ));\par
+\cf1 var \cf2 dte  \tab\tab\tab\tab\cf3 = (\cf2 EnvDTE80\cf3 .\cf2 DTE2\cf3 )\cf2 Package\cf3 .\cf5\b GetGlobalService\cf3\b0 (\cf7\b typeof\cf3\b0 (\cf2 EnvDTE\cf3 .\cf2 DTE\cf3 ));\par
+\cf1 var \cf2 errorListProvider \tab\cf3 = \cf7\b new \cf5 ErrorListProvider\cf3\b0 (\cf2 vsixPackage\cf3 );\par
+\cf1 var \cf2 errorText\tab\tab\tab\cf3 = \cf6 "this is a test item"\cf3 ;\par
+\cf1 var \cf2 errorCategory \tab\tab\cf3 = \cf2 TaskErrorCategory\cf3 .\cf2 Error\cf3 ;\par
+\par
+\cf4 //Get first project details\par
+\cf1 var \cf2 proj \tab\tab\tab\tab\cf3 = \cf2 dte\cf3 .\cf2 Solution\cf3 .\cf2 Projects\cf3 .\cf5\b Item\cf3\b0 (\cf9 1\cf3 );\par
+\cf1 var \cf2 projectUniqueName\tab\cf3 = \cf2 proj\cf3 .\cf2 FileName\cf3 ;\tab\par
+\cf1 var \cf2 firstFileInProject \tab\cf3 = \cf2 proj\cf3 .\cf2 ProjectItems\cf3 .\cf5\b Item\cf3\b0 (\cf9 1\cf3 ).\cf2 FileNames\cf3 [\cf9 0\cf3 ];\par
+\par
+\cf4 //Get first project IVsHierarchy item (needed to link the task with a project)\par
+\cf2 IVsHierarchy hierarchyItem\cf3 ;\par
+\cf2 ivsSolution\cf3 .\cf5\b GetProjectOfUniqueName\cf3\b0 (\cf2 projectUniqueName\cf3 , \cf8\b out \cf2\b0 hierarchyItem\cf3 );\par
+\par
+\cf1 var \cf2 newError \cf3 = \cf7\b new \cf5 ErrorTask\cf3\b0 () \par
+\tab\tab\{\par
+\tab\tab\tab\cf2 ErrorCategory \cf3 = \cf2 errorCategory\cf3 ,\par
+\tab\tab\tab\cf2 Category \tab  \cf3 = \cf2 TaskCategory\cf3 .\cf2 BuildCompile\cf3 ,\par
+\tab\tab\tab\cf2 Text\tab\tab  \cf3 = \cf2 errorText\cf3 ,\par
+\tab\tab\tab\cf2 Document \tab  \cf3 = \cf2 firstFileInProject\cf3 , \par
+\tab\tab\tab\cf2 Line\tab\tab  \cf3 = \cf9 2\cf3 ,\par
+\tab\tab\tab\cf2 Column\tab\tab  \cf3 = \cf9 6\cf3 , \par
+\tab\tab\tab\cf2 HierarchyItem \cf3 = \cf2 hierarchyItem\tab\tab\tab\par
+\tab\tab\cf3\}; \par
+\tab\tab\par
+\par
+\cf2 newError\cf3 .\cf2 Navigate \cf3 += (\cf2 sender\cf3 ,\cf2 e\cf3 )=>\par
+\tab\{\par
+\tab\tab\cf4 //there are two Bugs in the errorListProvider.Navigate method:\par
+\tab\tab //    Line number needs adjusting\par
+\tab\tab //    Column is not shown\par
+\tab\tab\cf2 newError\cf3 .\cf2 Line\cf3 ++;\par
+\tab\tab\cf2 errorListProvider\cf3 .\cf5\b Navigate\cf3\b0 (\cf2 newError\cf3 , \cf2 EnvDTE\cf3 .\cf2 Constants\cf3 .\cf2 vsViewKindCode\cf3 .\cf5\b guid\cf3\b0 ());\par
+\tab\tab\cf2 newError\cf3 .\cf2 Line\cf3 --;\par
+\tab\};\par
+\cf2 errorListProvider\cf3 .\cf2 Tasks\cf3 .\cf5\b Clear\cf3\b0 ();\tab\tab\cf4 // clear previously created\par
+\cf2 errorListProvider\cf3 .\cf2 Tasks\cf3 .\cf5\b Add\cf3\b0 (\cf2 newError\cf3 );\tab\cf4 // add item\par
+\cf2 errorListProvider\cf3 .\cf5\b Show\cf3\b0 (); \tab\tab\tab\tab\cf4 // make sure it is visible\par
+\tab\tab\tab\par
+\cf1 return \cf2 errorListProvider\cf3 ;\par
+\par
+\par
+\par
+\cf4 //using Microsoft.VisualStudio.Shell\par
+//using Microsoft.VisualStudio.Shell.Interop\par
+//using O2.FluentSharp.VSIX;\par
+//O2Ref:O2_FluentSharp_VSIX.dll\par
+//O2Ref:EnvDTE.dll\par
+//O2Ref:EnvDTE80.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.10.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.dll\par
+//O2Ref:Microsoft.VisualStudio.OLE.Interop.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.8.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.9.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.10.0.dll\par
+\par
+\pard\sa200\sl276\slmult1 //generateDebugSymbols\cf0\lang9\f0\fs22\par
+\par
+Creating an API to code VisualStudio from REPL\par
+\par
+\b Exposing an default Package object:\par
+\pard\cf4\lang1031\f1\fs18 using \cf2\b0 System\cf3 ;\par
+\cf4\b using \cf2\b0 Microsoft\cf3 .\cf2 VisualStudio\cf3 .\cf2 Shell\cf3 ;\par
+\cf4\b using \cf2\b0 Microsoft\cf3 .\cf2 VisualStudio\cf3 .\cf2 Shell\cf3 .\cf2 Interop\cf3 ;\par
+\par
+\cf4\b namespace \cf2\b0 O2\cf3 .\cf2 FluentSharp\cf3 .\cf2 VSIX\par
+\cf3\{\par
+    \cf10 /// <\b summary\b0 >\par
+    /// \cf4 Wrapper class for a number of VisualStudio Objects and methods that have to be created via MEF Extensions\par
+    \cf10 /// <\b /summary\b0 >\par
+    \cf6\b public \cf11\b0 class \cf2 VisualStudio_2010\par
+    \cf3\{\par
+        \cf6\b public \cf12\b0 static \cf2 Package Package \cf3\{ \cf13 get\cf3 ; \cf13 set\cf3 ; \}\par
+    \}\par
+\par
+    [\cf5\b ProvideAutoLoad\cf3\b0 (\cf2 UIContextGuids80\cf3 .\cf2 SolutionExists\cf3 )]\par
+    \cf6\b public \cf12\b0 sealed \cf11 class \cf2 DefaultPackage : Package\par
+    \cf3\{\par
+        \cf6\b public \cf5 DefaultPackage\cf3\b0 ()\par
+        \{\par
+            \cf2 VisualStudio_2010\cf3 .\cf2 Package \cf3 = \cf2\b this\cf3\b0 ;\par
+        \}\par
+    \}\par
+\}\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+\b Minimum dependencies needed\par
+\pard\cf1\lang1031\b0\f1\fs18 return \cf2 VisualStudio_2010\cf3 .\cf2 Package\cf3 ;  \par
+\cf1 return \cf6 "ok"\cf3 ;\par
+\cf4 //using O2.FluentSharp.VSIX\par
+//O2Ref:O2_FluentSharp_VSIX.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.10.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.8.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.9.0.dll\par
+//O2Ref:Microsoft.VisualStudio.Shell.Interop.10.0.dll\par
+\pard\sa200\sl276\slmult1 //O2Ref:Microsoft.VisualStudio.OLE.Interop.dll\cf0\lang9\f0\fs22\par
+Using this openScript method we can simplify the REPL script (by adding the usuall needed dependencies and references)\par
+\pard\lang1031\f1\fs24      \cf6\b\fs18 public \cf12\b0 static \cf2 ascx_Panel_With_Inspector \cf5\b open_ScriptEditor\cf3\b0 ()\par
+        \{                     \par
+            \cf2 CompileEngine\cf3 .\cf2 DefaultReferencedAssemblies\par
+                            \cf3 .\cf5\b add_OnlyNewItems\cf3\b0 (\cf6 "Microsoft.VisualStudio.Shell.10.0.dll"\cf3 ,\par
+                                                \cf6 "Microsoft.VisualStudio.Shell.Interop.dll"\cf3 ,\par
+                                                \cf6 "Microsoft.VisualStudio.Shell.Interop.8.0.dll"\cf3 ,\par
+                                                \cf6 "Microsoft.VisualStudio.Shell.Interop.9.0.dll"\cf3 ,\par
+                                                \cf6 "Microsoft.VisualStudio.Shell.Interop.10.0.dll"\cf3 ,\par
+                                                \cf6 "Microsoft.VisualStudio.OLE.Interop.dll"\cf3 ,\par
+                                                \cf6 "O2_FluentSharp_VSIX.dll"\cf3 );\par
+            \cf2 CompileEngine\cf3 .\cf2 DefaultUsingStatements\cf3 .\cf5\b add_OnlyNewItems\cf3\b0 (\cf6 "O2.FluentSharp.VSIX"\cf3 );\par
+\par
+            \cf1 var \cf2 scriptEditor \cf3 = \cf2 open\cf3 .\cf5\b scriptEditor\cf3\b0 ();\par
+            \cf2 scriptEditor\cf3 .\cf2 inspector\cf3 .\cf2 Code \cf3 = \cf6 @"return VisualStudio_2010.Package;"\cf3 ;\par
+            \cf1 return \cf2 scriptEditor\cf3 ;            \par
+\pard\sa200\sl276\slmult1         \}\cf0\lang9\f0\fs22\par
+\b Creating Errors and Messages:\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 ErrorList \cf3 = \cf2 VisualStudio_2010\cf3 .\cf2 ErrorListProvider\cf3 ;\par
+\par
+\cf2 ErrorList\cf3 .\cf5\b clear\cf3\b0 ();\par
+\cf2 ErrorList\cf3 .\cf5\b add_Error\cf3\b0 (\cf6 "You can Errors like this"\cf3 );\par
+\cf2 ErrorList\cf3 .\cf5\b add_Warning\cf3\b0 (\cf6 "You can Warnings like this"\cf3 );\par
+\cf2 ErrorList\cf3 .\cf5\b add_Message\cf3\b0 (\cf6 "You can Messages like this"\cf3 );\par
+\cf6 "This is another error"\cf3 .\cf5\b add_Error\cf3\b0 ();\par
+\cf6 "This is another Warning"\cf3 .\cf5\b add_Warning\cf3\b0 ();\par
+\cf6 "This is another Message"\cf3 .\cf5\b add_Message\cf3\b0 ();\par
+\par
+\cf1 return \cf2 VisualStudio_2010\cf3 .\cf2 Package\cf3 ;\par
+\pard\sa200\sl276\slmult1\cf4 //O2File:VisualStudio_2010_ExtensionMethods.cs\cf0\lang9\f0\fs22\par
+\b Adding errors via 'real-time' created extension methods\b0\par
+\pard\cf6\lang1031\f1\fs18 "A quick Error"\cf3 .\cf5\b add_Error\cf3\b0 ()\par
+\tab\tab  .\cf5\b wait\cf3\b0 (\cf9 1000\cf3 );\par
+\par
+\cf2 visualStudio\cf3 .\cf5\b errorList\cf3\b0 ().\cf5\b clear\cf3\b0 ()\par
+\tab      .\cf5\b wait\cf3\b0 (\cf9 500\cf3 )\par
+\tab      .\cf5\b add_Message\cf3\b0 (\cf6 "Hi From the O2 Platform"\cf3 )\par
+\tab      .\cf5\b errorList\cf3\b0 ().\cf5\b add_Error\cf3\b0 (\cf6 "with an extra error"\cf3 ,\cf9 20\cf3 ,\cf9 20\cf3 ); \par
+\par
+\cf1 return \cf2 visualStudio\cf3 ;\par
+ \par
+\cf4 //O2Ref:O2_FluentSharp_VisualStudio_2010.dll\par
+//O2Tag_DontAddExtraO2Files\par
+//O2File:E:\\O2_V4\\O2.FluentSharp\\O2.FluentSharp.VisualStudio_2010\\ExtensionMethods\\VisualStudio_2010_ExtensionMethods.cs\par
+\pard\sa200\sl276\slmult1 //O2File:E:\\O2_V4\\O2.FluentSharp\\O2.FluentSharp.VisualStudio_2010\\ExtensionMethods\\VS_ErrorListProvider_ExtensionMethods.cs\cf0\lang9\f0\fs22 .\par
+\b Adding a new TopLevel Menu (directly):\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 caption \cf3 = \cf6 "New Top Menu"\cf3 ;\par
+\cf1 var \cf2 dte \cf3 = \cf2 visualStudio\cf3 .\cf5\b dte\cf3\b0 (); \par
+\par
+\cf1 var \cf2 addAfterMenu \cf3 = \cf6 "Help"\cf3 ; \cf4 //"Tools"\par
+\cf2 dynamic commandBars \cf3 = \cf2 dte\cf3 .\cf2 CommandBars\cf3 ;\par
+\cf1 var \cf2 menuCommandBar \cf3 = \cf2 commandBars\cf3 [\cf6 "MenuBar"\cf3 ];\par
+\cf1 var \cf2 position \cf3 = (\cf2 commandBars\cf3 [\cf2 addAfterMenu\cf3 ].\cf2 Parent \cf7\b as \cf2\b0 CommandBarControl\cf3 ).\cf2 Index\cf3 ;\par
+\cf2 position\cf3 ++;\par
+\cf1 var \cf2 newMenu \cf3 = (\cf2 CommandBarPopup\cf3 )\cf2 menuCommandBar\cf3 .\cf2 Controls\cf3 .\cf5\b Add\cf3\b0 (\cf2 MsoControlType\cf3 .\cf2 msoControlPopup\cf3 , \cf2 System\cf3 .\cf2 Type\cf3 .\cf2 Missing\cf3 , \cf2 System\cf3 .\cf2 Type\cf3 .\cf2 Missing\cf3 , \cf2 position\cf3 , \cf7\b true\cf3\b0 );\par
+\cf2 newMenu\cf3 .\cf2 Caption \cf3 = \cf2 caption\cf3 ;\par
+\cf2 newMenu\cf3 .\cf2 Enabled \cf3 = \cf7\b true\cf3\b0 ;\par
+\cf1 return \cf2 newMenu\cf3 ;\par
+\cf4 //O2Ref:Microsoft.CSharp.dll\par
+//O2Ref:Microsoft.VisualStudio.CommandBars.dll\par
+\pard\sa200\sl276\slmult1 //using Microsoft.VisualStudio.CommandBars;\cf0\lang9\f0\fs22\par
+\b Adding new TopLevel Menus  (using Extension Methods)\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 dte \cf3 = \cf2 visualStudio\cf3 .\cf5\b dte\cf3\b0 ();\par
+\cf2 dte\cf3 .\cf5\b add_TopMenu\cf3\b0 ();\par
+\cf2 dte\cf3 .\cf5\b add_TopMenu\cf3\b0 (\cf6 "O2 Platform"\cf3 ); \par
+\cf2 dte\cf3 .\cf5\b add_TopMenu\cf3\b0 (\cf6 "After File"\cf3 , \cf6 "File"\cf3 );\par
+\par
+\cf4 //O2File:E:\\O2_V4\\O2.FluentSharp\\O2.FluentSharp.VisualStudio_2010\\ExtensionMethods\\VisualStudio_2010_ExtensionMethods.cs\par
+//O2File:E:\\O2_V4\\O2.FluentSharp\\O2.FluentSharp.VisualStudio_2010\\ExtensionMethods\\VS_Menus_ExtensionMethods.cs\par
+\pard\sa200\sl276\slmult1 //O2File:E:\\O2_V4\\O2.FluentSharp\\O2.FluentSharp.VisualStudio_2010\\ExtensionMethods\\VS_ErrorListProvider_ExtensionMethods.cs\cf0\lang9\f0\fs22\par
+\b Gettting a specific Menu (and disabling the File Menu)\b0\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 dte \cf3 = \cf2 visualStudio\cf3 .\cf5\b dte\cf3\b0 ();\par
+\par
+\cf1 var \cf2 fileMenu \cf3 = \cf2 dte\cf3 .\cf5\b get_Menu\cf3\b0 (\cf6 "File"\cf3 );\par
+\cf2 fileMenu\cf3 .\cf2 Enabled \cf3 = \cf7\b false\cf3\b0 ;\par
+\par
+\cf1 var \cf2 menuName \cf3 = \cf6 "O2 Platform"\cf3 ;\par
+\pard\sa200\sl276\slmult1\cf1 return \cf2 dte\cf3 .\cf5\b get_Menu\cf3\b0 (\cf2 menuName\cf3 );\cf0\lang9\f0\fs22\par
+\b Change a menu text\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 menuName \cf3 = \cf6 "O2 Platform"\cf3 ;\par
+\cf1 var \cf2 menu \cf3 = \cf2 dte\cf3 .\cf5\b get_Menu\cf3\b0 (\cf2 menuName\cf3 ); \par
+\pard\sa200\sl276\slmult1\cf2 menu\cf3 .\cf2 Caption \cf3 = \cf6 "O2 Platform - with new Caption"\cf3 ;\cf0\lang9\f0\fs22\par
+\b Adding a child Menu (directly)\par
+\pard\cf1\lang1031\b0\f1\fs18 var \cf2 dte \cf3 = \cf2 visualStudio\cf3 .\cf5\b dte\cf3\b0 ();\par
+\par
+\cf1 var \cf2 menuName \cf3 = \cf6 "O2 Platform"\cf3 ;\par
+\cf1 var \cf2 menuBar \cf3 = \cf2 dte\cf3 .\cf5\b get_Menu\cf3\b0 (\cf2 menuName\cf3 ); \par
+\par
+\cf1 var  \cf2 newMenuBar \cf3 = (\cf2 CommandBarButton\cf3 )\cf2 menuBar\cf3 .\cf2 Controls\cf3 .\cf5\b Add\cf3\b0 (\par
+\tab\tab\tab\tab\cf2 MsoControlType\cf3 .\cf2 msoControlButton\cf3 , \tab\tab\cf4 // type\par
+\tab\tab\tab\tab\cf2 System\cf3 .\cf2 Type\cf3 .\cf2 Missing\cf3 , \tab\tab\tab\cf4 // id\par
+\tab\tab\tab\tab\cf2 System\cf3 .\cf2 Type\cf3 .\cf2 Missing\cf3 , \tab\tab\tab\cf4 // parameter\par
+\tab\tab\tab\tab\cf9 1\cf3 ,\tab\tab\tab\tab\tab\tab\cf4 // before\par
+\tab\tab\tab\tab\cf7\b false\cf3\b0 );\tab\tab\tab\tab\tab\cf4 // temporary\par
+\par
+\cf2 newMenuBar\cf3 .\cf2 Click\cf3 +=(\cf2 CommandBarButton sender\cf3 , \cf8\b ref \cf11 bool \cf2\b0 CancelDefault\cf3 ) => \{ \cf6 "I was clicked"\cf3 .\cf5\b alert\cf3\b0 ();\};\par
+\cf2 newMenuBar\cf3 .\cf2 Caption \cf3 = \cf6 "Child Menu (click me)"\cf3 ;\par
+\pard\sa200\sl276\slmult1\cf2 newMenuBar\cf3 .\cf2 Enabled \cf3 = \cf7\b true\cf3\b0 ;\cf0\lang9\f0\fs22\par
+Adding a child menu item (via extension method)\par
+\pard\cf1\lang1031\f1\fs18 var \cf2 menuBar \cf3 = \cf2 dte\cf3 .\cf5\b get_Menu\cf3\b0 (\cf2 menuName\cf3 )\par
+\tab\tab    .\cf5\b add_Button\cf3\b0 (\cf6 "new button"\cf3 , ()=>\cf6 "New button clicked"\cf3 .\cf5\b alert\cf3\b0 ());\par
+\pard\sa200\sl276\slmult1\cf0\lang9\f0\fs22\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+.\par
+\par
+}
+ 
